@@ -2,6 +2,9 @@
 import LandingNavbar from '../components/LandingNavbar.vue';
 import HeroSection from '../components/HeroSection.vue';
 import SuitesSection from '../components/SuitesSection.vue';
+import ServicesSection from '../components/ServicesSection.vue';
+import TestimonialSection from '../components/TestimonialSection.vue';
+import LandingFooter from '../components/LandingFooter.vue';
 </script>
 
 <template>
@@ -11,12 +14,9 @@ import SuitesSection from '../components/SuitesSection.vue';
     <main>
       <HeroSection />
       <SuitesSection />
+      <ServicesSection />
+      <TestimonialSection />
+      <LandingFooter />
     </main>
-
-    <footer class="border-t border-white/10">
-      <div class="mx-auto max-w-7xl px-6 py-10 text-sm text-slate-200/70">
-        © {{ new Date().getFullYear() }} Hotel Ventura. Todos los derechos reservados.
-      </div>
-    </footer>
   </div>
 </template>
