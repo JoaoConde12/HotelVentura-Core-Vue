@@ -3,24 +3,23 @@ import { ref } from 'vue';
 import UsersTable from '../components/UsersTable.vue';
 import RoomsTable from '../components/RoomsTable.vue';
 import ReservationsTable from '../components/ReservationsTable.vue';
-import RoomTypesTable from '../components/RoomTypesTable.vue'; // <--- NUEVO IMPORT
+import RoomTypesTable from '../components/RoomTypesTable.vue';
 import ReportsPanel from '../components/ReportsPanel.vue';
 
-// Estado para controlar qué pestaña está activa
 const activeTab = ref<'reports' | 'users' | 'rooms' | 'room-types' | 'reservations'>('reports');
 
 const menuItems = [
   { id: 'reports', label: 'Dashboard', icon: 'analytics' },
   { id: 'users', label: 'Usuarios', icon: 'group' },
   { id: 'rooms', label: 'Habitaciones', icon: 'bed' },
-  { id: 'room-types', label: 'Tipos & Tarifas', icon: 'category' }, // <--- NUEVA OPCIÓN
+  { id: 'room-types', label: 'Tipos & Tarifas', icon: 'category' },
   { id: 'reservations', label: 'Reservas', icon: 'book_online' },
 ];
 </script>
 
 <template>
   <div class="min-h-screen bg-background-dark text-white flex flex-col md:flex-row font-sans">
-    <aside class="w-full md:w-64 bg-surface-dark border-r border-white/10 flex-shrink-0">
+    <aside class="w-full md:w-64 bg-surface-dark border-r border-white/10 shrink-0">
       <div class="p-6 border-b border-white/10">
         <h1 class="font-serif text-xl font-bold text-primary">Admin Panel</h1>
         <p class="text-xs text-slate-400 mt-1">Hotel Ventura</p>

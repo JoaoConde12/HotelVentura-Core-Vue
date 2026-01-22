@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-// Estados para los inputs
 const dailyDate = ref('');
 const weeklyStart = ref('');
 const monthlyYear = ref(new Date().getFullYear());
 const monthlyMonth = ref(new Date().getMonth() + 1);
 
-// Mock de descarga (luego conectamos con window.open o axios blob)
 const downloadReport = (type: 'daily' | 'weekly' | 'monthly' | 'welcome') => {
   console.log(`Descargando reporte: ${type}`);
-  // Aquí irá la lógica: window.open(`${API_URL}/reports/${type}?param=...`)
 };
 </script>
 
@@ -117,7 +114,7 @@ const downloadReport = (type: 'daily' | 'weekly' | 'monthly' | 'welcome') => {
     </div>
 
     <div
-      class="md:col-span-2 lg:col-span-3 bg-gradient-to-r from-surface-dark to-primary/10 border border-white/10 rounded-xl p-6 flex items-center justify-between"
+      class="md:col-span-2 lg:col-span-3 bg-linear-to-r from-surface-dark to-primary/10 border border-white/10 rounded-xl p-6 flex items-center justify-between"
     >
       <div>
         <h3 class="font-bold text-lg text-white mb-1">Documento de Bienvenida</h3>
