@@ -13,11 +13,11 @@ const navLinks = [
   <header class="sticky top-0 z-50 border-b border-white/10 bg-background-dark/80 backdrop-blur">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
       <a href="/" class="flex items-center gap-3">
-        <div class="h-9 w-9 rounded-lg bg-primary/20 ring-1 ring-primary/30"></div>
-        <div class="leading-tight">
-          <p class="font-serif text-lg text-white">Hotel Ventura</p>
-          <p class="text-[11px] tracking-[0.2em] uppercase text-slate-200/60">Riobamba</p>
-        </div>
+        <img
+          src="/imgs/navlogo.png"
+          alt="Hotel Ventura Logo"
+          class="h-8 w-auto md:h-10 object-contain"
+        />
       </a>
 
       <nav class="hidden items-center gap-8 md:flex">

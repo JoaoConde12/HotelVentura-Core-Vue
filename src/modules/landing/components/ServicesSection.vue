@@ -4,19 +4,19 @@ const services = [
     title: 'Spa de Lujo',
     description:
       'Relájese con tratamientos exclusivos inspirados en rituales ancestrales, sauna y baño turco.',
-    imageClass: 'bg-stone-800',
+    image: '/imgs/spa.png',
   },
   {
     title: 'Alta Cocina',
     description:
-      'Experiencias culinarias galardonadas dirigidas por chefs internacionales en nuestros 3 restaurantes.',
-    imageClass: 'bg-stone-700',
+      'Experiencias culinarias galardonadas dirigidas por chefs internacionales en nuestro restaurante.',
+    image: '/imgs/restaurante.png',
   },
   {
     title: 'Concierge 24/7',
     description:
       'Atención personalizada para organizar tours, reservas o transporte privado en cualquier momento.',
-    imageClass: 'bg-stone-600',
+    image: '/imgs/concierge.png',
   },
 ];
 </script>
@@ -49,18 +49,21 @@ const services = [
           :key="service.title"
           class="group flex cursor-pointer flex-col gap-4"
         >
-          <div class="relative h-72 w-full overflow-hidden rounded-sm">
-            <div
-              class="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-              :class="service.imageClass"
-            ></div>
+          <div class="relative h-72 w-full overflow-hidden rounded-sm bg-surface-dark">
+            <img
+              :src="service.image"
+              :alt="service.title"
+              class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
 
             <div
               class="absolute inset-0 bg-black/40 transition-colors group-hover:bg-black/20"
             ></div>
 
             <div class="absolute bottom-6 left-6 right-6 border-l-2 border-primary pl-4">
-              <h3 class="font-serif text-2xl font-bold text-white">{{ service.title }}</h3>
+              <h3 class="font-serif text-2xl font-bold text-white drop-shadow-md">
+                {{ service.title }}
+              </h3>
             </div>
           </div>
 

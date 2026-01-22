@@ -6,47 +6,44 @@ type Suite = {
   description: string;
   priceLabel: string;
   href: string;
+  imageSrc: string;
 };
 
 const suites: Suite[] = [
   {
     title: 'Suite Deluxe',
     description: 'Vista hermosa, cama premium, WiFi.',
-    priceLabel: '$80 / noche',
+    priceLabel: '$15 / noche',
     href: '/reservar',
+    imageSrc: '/imgs/suit.jpeg',
   },
   {
     title: 'Doble Confort',
     description: 'Ideal para parejas o amigos.',
-    priceLabel: '$110 / noche',
+    priceLabel: '$30 / noche',
     href: '/reservar',
+    imageSrc: '/imgs/doble.jpeg',
   },
   {
     title: 'Triple Familiar',
     description: 'Espacio y comodidad para 3.',
-    priceLabel: '$140 / noche',
+    priceLabel: '$45 / noche',
     href: '/reservar',
+    imageSrc: '/imgs/triple.jpeg',
   },
 ];
 </script>
 
 <template>
   <section id="habitaciones" class="mx-auto max-w-7xl px-6 py-16 sm:py-20">
-    <!-- Header centrado (y adaptable) -->
     <div class="mx-auto max-w-3xl text-center">
       <p class="text-primary text-xs tracking-[0.25em] uppercase">Alojamiento</p>
-      <h2 class="mt-2 font-serif text-3xl sm:text-4xl">Suites Exclusivas</h2>
+      <h2 class="mt-2 font-serif text-3xl sm:text-4xl">Habitaciones de Lujo</h2>
       <p class="mt-4 text-slate-200/80">
-        Selecciona tu tipo de habitación y reserva en pocos pasos.
+        Conoce nuestras planes de habitaciones y sus precios por noche
       </p>
     </div>
 
-    <!-- Link "Ver todas" centrado -->
-    <div class="mt-8 flex justify-center">
-      <a href="#habitaciones" class="text-sm text-primary hover:underline"> Ver todas → </a>
-    </div>
-
-    <!-- Grid responsive centrado -->
     <div class="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       <SuiteCard
         v-for="s in suites"
@@ -55,6 +52,7 @@ const suites: Suite[] = [
         :description="s.description"
         :price-label="s.priceLabel"
         :href="s.href"
+        :image-src="s.imageSrc"
       />
     </div>
   </section>
