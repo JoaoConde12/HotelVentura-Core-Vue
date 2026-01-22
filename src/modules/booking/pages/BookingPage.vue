@@ -13,9 +13,6 @@ interface Room {
 
 const currentFloor = ref(1);
 const selectedRoom = ref<Room | null>(null);
-
-// --- LÓGICA DE FECHAS ---
-// Obtener fecha de hoy en formato YYYY-MM-DD
 const getToday = () => new Date().toISOString().split('T')[0];
 
 const dates = ref({
@@ -23,11 +20,9 @@ const dates = ref({
   end: '',
 });
 
-// Validaciones calculadas
 const minStartDate = computed(() => getToday());
 const minEndDate = computed(() => dates.value.start || getToday());
 
-// Watcher: Si la fecha de inicio cambia y es mayor que la fecha fin actual, limpiamos la fecha fin
 watch(
   () => dates.value.start,
   (newStart) => {
