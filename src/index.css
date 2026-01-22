@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Tailwind v4: define tu theme aquí */
 @theme {
   --color-primary: #d4af37;
   --color-primary-light: #f3e5ab;
@@ -16,7 +15,6 @@
   --radius-xl: 0.75rem;
 }
 
-/* Base global para que SIEMPRE haya fondo oscuro */
 html,
 body {
   height: 100%;
