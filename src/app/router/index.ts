@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router"
+import BookingPage from '../../modules/booking/pages/BookingPage.vue';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -8,6 +9,11 @@ const router = createRouter({
       name: "landing",
       component: () => import("../../modules/landing/pages/LandingPage.vue"),
     },
+    {
+      path: '/reservar',
+      name: 'booking',
+      component: BookingPage
+    }
   ],
 })
 
