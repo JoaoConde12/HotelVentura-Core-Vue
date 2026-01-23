@@ -137,7 +137,7 @@ const fetchRoomsAndTypes = async () => {
 };
 
 const fetchReservations = async () => {
-  const res = await api.get(`/reservations`);
+  const res = await api.get(`/reservations/me`);
   reservations.value = Array.isArray(res.data) ? res.data : [];
 };
 
