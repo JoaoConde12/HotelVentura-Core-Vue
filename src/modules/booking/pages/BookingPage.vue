@@ -2,23 +2,21 @@
 import { ref, watch, computed, onMounted } from 'vue';
 import FloorMap from '../components/FloorMap.vue';
 import LandingNavbar from '@/modules/landing/components/LandingNavbar.vue';
-
 import api from '@/app/config/axios';
 
 type RoomStatus = 'available' | 'occupied' | 'maintenance' | 'selected';
 
 interface Room {
   id: number;
-  number: string; // "101"
-  floor: number; // 1
+  number: string;
+  floor: number;
   status: RoomStatus;
   type: string;
   price: number;
   baseStatus: RoomStatus;
 }
 
-interface Reservation {
-  id: number;
+interface ReservationBlocked {
   room_id: number;
   fecha_inicio: string;
   fecha_fin: string;
@@ -26,7 +24,7 @@ interface Reservation {
 }
 
 const allRooms = ref<Room[]>([]);
-const reservations = ref<Reservation[]>([]);
+const reservations = ref<ReservationBlocked[]>([]);
 const isLoading = ref(true);
 
 const currentFloor = ref(1);
@@ -42,11 +40,9 @@ const isCreatingPaypal = ref(false);
 const reservationError = ref<string | null>(null);
 const reservationSuccess = ref<string | null>(null);
 
-// ✅ si ya se generó una reserva pending “del flujo actual”
 const hasPendingReservation = ref(false);
 const lastReservationId = ref<number | null>(null);
 
-// ---------- fechas ----------
 const getToday = () => new Date().toISOString().split('T')[0];
 const minStartDate = computed(() => getToday());
 const minEndDate = computed(() => dates.value.start || getToday());
@@ -58,7 +54,6 @@ watch(
   },
 );
 
-// ---------- helpers ----------
 const backendEstadoToBase = (estado: string): RoomStatus => {
   if (estado === 'disponible') return 'available';
   if (estado === 'ocupada') return 'occupied';
@@ -103,7 +98,6 @@ const toDateOnlyUTC = (raw: string): number | null => {
   return Date.UTC(parsed.y, parsed.m - 1, parsed.d);
 };
 
-// overlap: [start, end) checkout no ocupa noche
 const overlaps = (resStart: string, resEnd: string, selStart: string, selEnd: string): boolean => {
   const aStart = toDateOnlyUTC(resStart);
   const aEnd = toDateOnlyUTC(resEnd);
@@ -114,7 +108,6 @@ const overlaps = (resStart: string, resEnd: string, selStart: string, selEnd: st
   return aStart < bEnd && aEnd > bStart;
 };
 
-// ---------- fetch data ----------
 const fetchRoomsAndTypes = async () => {
   const [roomsRes, typesRes] = await Promise.all([api.get(`/rooms`), api.get(`/room-types`)]);
 
@@ -137,7 +130,12 @@ const fetchRoomsAndTypes = async () => {
 };
 
 const fetchReservations = async () => {
-  const res = await api.get(`/reservations/me`);
+  const { start, end } = dates.value;
+
+  const res = await api.get(`/reservations/blocked`, {
+    params: start && end ? { start, end } : undefined,
+  });
+
   reservations.value = Array.isArray(res.data) ? res.data : [];
 };
 
@@ -149,7 +147,6 @@ const recomputeAvailability = () => {
     return;
   }
 
-  // pending y paid bloquean
   const blocking = reservations.value.filter((r) => r.status === 'pending' || r.status === 'paid');
 
   const blockedRoomIds = new Set<number>();
@@ -165,7 +162,6 @@ const recomputeAvailability = () => {
     return { ...rm, status: 'available' };
   });
 
-  // ✅ si estás en flujo de pago (hasPendingReservation), NO mates la selección
   if (selectedRoom.value && !hasPendingReservation.value) {
     const updated = allRooms.value.find((x) => x.id === selectedRoom.value!.id);
     if (!updated || updated.status !== 'available') selectedRoom.value = null;
@@ -187,7 +183,6 @@ const fetchData = async () => {
 
 onMounted(fetchData);
 
-// Cambios de fechas => se resetea el flujo
 watch(
   () => [dates.value.start, dates.value.end] as const,
   async ([start, end]) => {
@@ -210,7 +205,6 @@ watch(
   },
 );
 
-// ---------- UI handlers ----------
 const handleRoomSelect = (room: Room) => {
   if (room.status !== 'available') return;
 
@@ -223,9 +217,6 @@ const handleRoomSelect = (room: Room) => {
   lastReservationId.value = null;
 };
 
-// ✅ Ahora SOLO pagas con PayPal:
-// - backend create-order crea la reserva pending
-// - devuelve approve_url + reservation_id
 const payWithPaypal = async () => {
   reservationError.value = null;
   reservationSuccess.value = null;
@@ -239,7 +230,6 @@ const payWithPaypal = async () => {
     return;
   }
 
-  // Validación extra (por si el mapa se quedó desactualizado)
   const current = allRooms.value.find((r) => r.id === selectedRoom.value!.id);
   if (!current || current.status !== 'available') {
     reservationError.value = 'Esa habitación ya no está disponible en ese rango.';
@@ -255,17 +245,14 @@ const payWithPaypal = async () => {
       fecha_fin: dates.value.end,
     });
 
-    // ✅ OJO: el backend devuelve approve_url (NO approval_url)
     const approveUrl = res.data?.approve_url;
     const reservationId = res.data?.reservation_id;
 
     if (!approveUrl) throw new Error('approve_url no vino');
     if (!reservationId) throw new Error('reservation_id no vino');
 
-    // guardamos reserva para capturar al volver
     localStorage.setItem('paypal_reservation_id', String(reservationId));
 
-    // mantenemos panel visible
     hasPendingReservation.value = true;
     lastReservationId.value = Number(reservationId);
 

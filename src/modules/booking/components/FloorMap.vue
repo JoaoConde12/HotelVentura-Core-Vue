@@ -67,13 +67,13 @@ const statusPillClass = (room: Room) => {
   >
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <template v-for="(room, i) in floorRooms" :key="room.id">
-        <!-- Pasillo central -->
+        <!-- Pasillo -->
         <div
           v-if="i === 4"
           class="col-span-2 md:col-span-4 h-12 my-4 flex items-center justify-center border-y border-white/5 bg-background-dark/50 relative"
         >
           <span class="text-[10px] uppercase tracking-[1.5em] text-slate-600 font-black"
-            >Pasillo Central</span
+            >Pasillo</span
           >
           <div class="absolute left-0 h-full w-1 bg-primary/30"></div>
         </div>
